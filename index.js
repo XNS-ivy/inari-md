@@ -1,0 +1,1 @@
+const { useMulfiFileAuthState } = require('@whiskeysockets/baileys');
