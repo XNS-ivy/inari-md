@@ -1,7 +1,6 @@
-const {  makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys");
+const { makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys");
 const pino = require("pino");
-const { boom } = require('@hapi/boom');
-const fs = require('fs');
+const { Boom } = require('@hapi/boom');
 const express = require('express');
 const app = express();
 const sessionPath = './session';
@@ -15,56 +14,61 @@ async function inariSock() {
     qrTimeout: 30000,
     auth: state,
     logger: pino({ level: 'silent' }),
-    browser: ['Inari-MD','FireFox','1.0.0']
+    browser: pairingCode ? ['Chrome (linux)','',''] : ['Inari-MD', 'FireFox', '1.0.0'],
   });
-  if(pairingCode && !inari.authState.creds.regustered){
-    const question = () => new Promise ((resolve) => {
-      const readLine = require('readline').createInterface({
+
+  if (pairingCode && !inari.authState.creds.registered) {
+    const question = () => new Promise((resolve) => {
+      const readline = require('readline').createInterface({
         input: process.stdin,
         output: process.stdout,
       });
-      
-      readline.question('Input Your Phone Number: +',(resolve) => {
+
+      readline.question('Input Your Phone Number: +', (answer) => {
         resolve(answer);
         readline.close();
       });
     });
+
     const pNumber = await question();
-    setTimeout(async() => {
-      const code = await inari.requestPairingCode(Phone);
-      console.log('Your Pairing Code : '+ code);
+
+    setTimeout(async () => {
+      const code = await inari.requestPairingCode(pNumber);
+      console.log('Your Pairing Code: ' + code);
     }, 5000);
   }
-  inari.ev.on('connection.update',async  ({connection}) => {
-    if(connection === 'open'){
-      console.log('is open');
-    } else if (connection === 'close'){
-      setTimeout(() =>{
-        console.log('Connection Cloded, Try To Recconect\n\n');
+
+  inari.ev.on('connection.update', async ({ connection }) => {
+    if (connection === 'open') {
+      console.log('Connection is open');
+    } else if (connection === 'close') {
+      setTimeout(() => {
+        console.log('Connection Closed, Trying To Reconnect\n');
       }, 3000);
       try {
         await inariSock();
       } catch (error) {
-        console.error('Error Reconnecting\n\n',error);
+        console.error('Error Reconnecting\n', error);
         throw error;
       }
     }
   });
+
   inari.ev.on('creds.update', saveCreds);
+  inari.ev.on('messages.upsert',({messages}) =>{
+    const m = messages[0];
+    if (!m.messages) return;
+    console.log(m);
+  });
 }
 
-app.get('/',async(req, res) => {
-  try {
-  await inariSock();
-  res.send('Check your server logs for connection status.');
-  } catch (error) {
-    console.error('Error Start Server:\n\n',error);
-    throw error;
-  }
-});
-
-// Start the server
 const PORT = 3000;
 app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  try {
+    await inariSock();
+  } catch (error) {
+    console.error('Error starting inariSock:\n\n', error);
+    process.exit(1);
+  }
 });
