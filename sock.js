@@ -2,6 +2,7 @@ const { makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys
 const pino = require("pino");
 const { Boom } = require('@hapi/boom');
 const pairingCode = process.argv.includes('--cd');
+const { messageHandle } = require('./lib/inariMsg.js');
 
 const sessionPath = './session';
 
@@ -53,10 +54,14 @@ async function inariSock() {
   });
 
   inari.ev.on('creds.update', saveCreds);
-  inari.ev.on('messages.upsert',({messages}) =>{
+  inari.ev.on('messages.upsert',async ({messages}) =>{
     const m = messages[0];
     if (!m.message) return;
-    console.log(m);
+    try {
+      await messageHandle(inari,m);
+    } catch (error) {
+      console.error('Error On Massage Listener :\n',error);
+    }
   });
 }
 
