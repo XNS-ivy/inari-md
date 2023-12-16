@@ -1,22 +1,41 @@
 const { makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys");
 const pino = require("pino");
 const { Boom } = require('@hapi/boom');
-const pairingCode = process.argv.includes('--cd');
+const pairCode = process.argv.includes('--cd');
 const { messageHandle } = require('./lib/inariMsg.js');
+const fs = require('fs');
 
 const sessionPath = './session';
-
 async function inariSock() {
   const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
+  let creds;
+  let browser;
+  try {
+    creds = JSON.parse(fs.readFileSync('./session/creds.json'));
+  } catch (err) {
+    creds = null;
+  }
+
+  if (!creds) {
+    browser = pairCode ? ['Chrome (linux)', '', ''] :
+      ['Inari-MD', 'FireFox', '1.0.0'];
+  } else {
+    if (!creds.pairingCode || creds.pairingCode === "") {
+      browser = ['Inari-MD', 'FireFox', '1.0.0'];
+    } else {
+      browser = ['Chrome (linux)', '', ''];
+    }
+  }
+
   const inari = await makeWASocket({
-    printQRInTerminal: !pairingCode,
+    printQRInTerminal: !pairCode,
     qrTimeout: 30000,
     auth: state,
     logger: pino({ level: 'silent' }),
-    browser: pairingCode ? ['Chrome (linux)','',''] : ['Inari-MD', 'FireFox', '1.0.0'],
+    browser: browser,
   });
 
-  if (pairingCode && !inari.authState.creds.registered) {
+  if (pairCode && !inari.user && !inari.authState.creds.registered) {
     const question = () => new Promise((resolve) => {
       const readline = require('readline').createInterface({
         input: process.stdin,
@@ -32,14 +51,14 @@ async function inariSock() {
     const pNumber = await question();
 
     setTimeout(async () => {
-      const code = await inari.requestPairingCode(pNumber);
+      const code = await inari.requestpairCode(pNumber);
       console.log('Your Pairing Code: ' + code);
     }, 5000);
   }
 
   inari.ev.on('connection.update', async ({ connection }) => {
     if (connection === 'open') {
-      console.log('Connection is open');
+      console.log('Connection is open : +', inari.user.id);
     } else if (connection === 'close') {
       setTimeout(() => {
         console.log('Connection Closed, Trying To Reconnect\n');
@@ -54,13 +73,13 @@ async function inariSock() {
   });
 
   inari.ev.on('creds.update', saveCreds);
-  inari.ev.on('messages.upsert',async ({messages}) =>{
+  inari.ev.on('messages.upsert', async ({ messages }) => {
     const m = messages[0];
     if (!m.message) return;
     try {
-      await messageHandle(inari,m);
+      await messageHandle(inari, m);
     } catch (error) {
-      console.error('Error On Massage Listener :\n',error);
+      console.error('Error On Massage Listener :\n', error);
     }
   });
 }
