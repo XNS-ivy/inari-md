@@ -58,7 +58,7 @@ async function inariSock() {
 
   inari.ev.on('connection.update', async ({ connection }) => {
     if (connection === 'open') {
-      console.log('Connection is open : +', inari.user.id);
+      console.log(`Connection is open : +${inari.user.id}`);
     } else if (connection === 'close') {
       setTimeout(() => {
         console.log('Connection Closed, Trying To Reconnect\n');
