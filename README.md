@@ -1,6 +1,5 @@
 # inari-md
 
-![Build Status](https://img.shields.io/travis/username/inari-md.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 > Inari-MD is a multi-device WhatsApp bot developed using the Express framework and baileys. With perfect grammar support, this project allows users to perform various tasks through WhatsApp on different devices.
@@ -18,14 +17,14 @@ $ pkg install nodejs ffmpeg git
 ### Windows User
 If you're using windows here is to get all the following requirements :
 
-#### Nodejs
-(https://nodejs.org/)
+#### Nodejs :
+    https://nodejs.org/
 
-#### Git
-(https://git-scm.com/downloads)
+#### Git :
+    https://git-scm.com/downloads
 
-#### Git
-(https://www.gyan.dev/ffmpeg/builds/)
+#### Ffmpeg :
+    https://www.gyan.dev/ffmpeg/builds/
 
 ## Installing
     
