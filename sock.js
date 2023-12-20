@@ -6,6 +6,7 @@ const { messageHandle } = require('./lib/inariMsg.js');
 const fs = require('fs');
 
 const sessionPath = './session';
+
 async function inariSock() {
   const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
   let creds;
@@ -77,6 +78,7 @@ async function inariSock() {
     const m = messages[0];
     if (!m.message) return;
     try {
+      console.log(m);
       await messageHandle(inari, m);
     } catch (error) {
       console.error('Error On Massage Listener :\n', error);
