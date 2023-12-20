@@ -78,8 +78,9 @@ async function inariSock() {
     const m = messages[0];
     if (!m.message) return;
     try {
-      console.log(m);
+      // console.log(m);
       await messageHandle(inari, m);
+
     } catch (error) {
       console.error('Error On Massage Listener :\n', error);
     }
