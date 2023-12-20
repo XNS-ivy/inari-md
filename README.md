@@ -53,7 +53,7 @@ There is two methods to running the bot :
 $ npm tart
 ```
 
-### USING PAIRING CODE
+### Using Pairing Code
 > its recommended if you're using termux on android device when you have two device
 ```bash
 $ npm run pairCode
