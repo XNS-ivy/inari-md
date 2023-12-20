@@ -18,14 +18,14 @@ $ pkg install nodejs ffmpeg git
 ### Windows User
 If you're using windows here is to get all the following requirements :
 
-##### Nodejs
-[nodejs](https://nodejs.org/)
+#### Nodejs
+(https://nodejs.org/)
 
-##### Git
-[git](https://git-scm.com/downloads)
+#### Git
+(https://git-scm.com/downloads)
 
-##### Git
-[ffmpeg](https://www.gyan.dev/ffmpeg/builds/)
+#### Git
+(https://www.gyan.dev/ffmpeg/builds/)
 
 ## Installing
     
