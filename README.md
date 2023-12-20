@@ -41,3 +41,30 @@ Now you can installing all bot depedencies by following this command :
 ```bash
 $ npm install
 ```
+
+# Running the Bot
+There is two methods to running the bot :
+1. Scanning Using QR CODE
+2. Using Phone Number Pairing Code
+
+### Using QR CODE
+> its neccesary for you to scan the QR CODE with two device available im recommended if you're using pc
+```bash
+$ npm tart
+```
+
+### USING PAIRING CODE
+> its recommended if you're using termux on android device when you have two device
+```bash
+$ npm run pairCode
+```
+
+# Feature List
++ Supports multi-device WhatsApp.
++ Searching Wikipedia.
++ Image To Stickers.
+
+And Any Update will realese as soon as possible.
+
+# License
+This project is licensed under the MIT [License](https://github.com/XNS-ivy/inari-md/blob/main/LICENSE) - see the LICENSE file for details.
