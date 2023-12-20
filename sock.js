@@ -4,11 +4,14 @@ const { Boom } = require('@hapi/boom');
 const pairCode = process.argv.includes('--cd');
 const { messageHandle } = require('./lib/inariMsg.js');
 const fs = require('fs');
+const path = require('path');
 
 const sessionPath = './session';
 
 async function inariSock() {
   const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
+  const daysToKeep = 1;
+  await cleanSesion(sessionPath, daysToKeep);
   let creds;
   let browser;
   try {
@@ -85,6 +88,25 @@ async function inariSock() {
       console.error('Error On Massage Listener :\n', error);
     }
   });
+}
+async function cleanSesion(basePath, daysToKeep) {
+  const currentTime = Date.now();
+  const files = fs.readdirSync(basePath);
+
+  for (const file of files) {
+    const filePath = path.join(basePath, file);
+    const stat = fs.statSync(filePath);
+    const fileAge = (currentTime - stat.mtime.getTime()) / (1000 * 60 * 60 * 24);
+
+    const isPreKeyFile = /^pre-key-\d+\.json$/.test(file);
+    const isSessionFile = /^session-\d+\.json$/.test(file);
+    const isCredsFile = /^creds\.json$/.test(file);
+
+    if ((isPreKeyFile || isSessionFile) && fileAge > daysToKeep && !isCredsFile) {
+      fs.unlinkSync(filePath);
+      console.log(`Deleted old session file: ${filePath}`);
+    }
+  }
 }
 
 module.exports = {
