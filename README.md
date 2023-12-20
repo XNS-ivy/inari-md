@@ -9,14 +9,12 @@
 If you're use termux here is the following requirement :
     
 ```bash
-$ pkg install ffmpeg
-$ pkg install nodejs
-$ pkg install git
+$ pkg install nodejs ffmpeg git
 ```
 
 ## Installing
     
-    After that now you can clone this repo :
+After that now you can clone this repo :
 
 ```bash
 $ git clone https://github.com/XNS-ivy/inari-md.git
@@ -26,3 +24,4 @@ Now you can installing all bot depedencies by following this command :
 ```bash
 $ npm install
 ```
+
