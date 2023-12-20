@@ -9,11 +9,23 @@
 
 ## Requirement
 
-If you're use termux here is the following requirement :
+### Termux User
+If you're use termux here is the following requirements :
     
 ```bash
 $ pkg install nodejs ffmpeg git
 ```
+### Windows User
+If you're using windows here is to get all the following requirements :
+
+##### Nodejs
+[nodejs](https://nodejs.org/)
+
+##### Git
+[git](https://git-scm.com/downloads)
+
+##### Git
+[ffmpeg](https://www.gyan.dev/ffmpeg/builds/)
 
 ## Installing
     
