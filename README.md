@@ -2,9 +2,9 @@
 
 > Inari-MD is a multi-device WhatsApp bot developed using the Express framework and baileys. With perfect grammar support, this project allows users to perform various tasks through WhatsApp on different devices.
 
-## Installation
+# Installation
 
-# Requirement
+## Requirement
 
 If you're use termux here is the following requirement :
     
@@ -25,3 +25,4 @@ Now you can installing all bot depedencies by following this command :
 $ npm install
 ```
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
