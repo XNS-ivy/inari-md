@@ -1,5 +1,6 @@
 # inari-md
 
+![Alt Text](https://avatars.githubusercontent.com/u/140568381?s=400&u=83e0136b276dc6576c554da955b357385e633176&v=4)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 > Inari-MD is a multi-device WhatsApp bot developed using the Express framework and baileys. With perfect grammar support, this project allows users to perform various tasks through WhatsApp on different devices.
