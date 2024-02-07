@@ -50,7 +50,7 @@ There is two methods to running the bot :
 ### Using QR CODE
 > its neccesary for you to scan the QR CODE with two device available im recommended if you're using pc
 ```bash
-$ npm tart
+$ npm start
 ```
 
 ### Using Pairing Code
